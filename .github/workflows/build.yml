@@ -18,3 +18,10 @@ jobs:
         run: yarn install
       - name: Run linter
         run: yarn lint
+      - name: Build Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          tags: emilesteyaert/webapp:latest
+          push: false
