@@ -1,0 +1,12 @@
+#version: "3" # Specify the version of Docker Compose
+
+services:
+  webapp:
+    image: webapp # Use the image you built in the previous step
+    build:
+      context: . # Specify the build context
+    ports:
+      - "3000:3000" # Map port 3000 on the host to port 3000 in the container
+    restart: unless-stopped # Restart policy
+    volumes:
+      - ./database:/app/database # Mount the host directory to the container

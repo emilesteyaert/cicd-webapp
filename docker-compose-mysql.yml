@@ -1,0 +1,36 @@
+version: "3" # Specify the version of Docker Compose
+
+services:
+  webapp:
+    image: webapp # Use the image you built
+    build:
+      context: . # Specify the build context
+    ports:
+      - "3000:3000" # Map port 3000 on the host to port 3000 in the container
+    environment:
+      MYSQL_URL: mysql://user:password@database:3306/animals # Replace with your actual values
+    restart: unless-stopped # Restart policy
+    volumes:
+      - ./database:/app/database # Persist the database on the host system
+
+  database:
+    image: mysql:8.0 # Use the official MySQL image
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword # Set the root password
+      MYSQL_DATABASE: animals # Create the animals database
+      MYSQL_USER: user # Create a user
+      MYSQL_PASSWORD: password # Set the user password
+    volumes:
+      - mysql_data:/var/lib/mysql # Persist MySQL data in a Docker volume
+    restart: unless-stopped
+
+  test:
+    image: webapp # Reuse the same webapp image for running tests
+    environment:
+      API_URL: http://webapp:3000/ # Use the webapp service name as hostname for the API
+    depends_on:
+      - webapp # Ensure webapp is started before running the tests
+    command: yarn test # Run the tests instead of starting the webapp
+
+volumes:
+  mysql_data: # Named volume for MySQL data
