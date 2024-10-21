@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2 # intentional downgrade to check dependabott
+        uses: actions/checkout@v4 # intentional downgrade to check dependabott
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
